@@ -1,6 +1,18 @@
 # Terraform Template for AWS Swarm with Storidge CIO
 This repo contains a [Terraform](https://www.terraform.io/) template for generating and managing clusters of AWS instances with the community edition of the [Storidge CIO](http://storidge.com/docs/) software.
 
+## Configuration
+Default cluster configuration (can be altered in the `variables.tf` and `instances.tf` files):
+
+* 1 Swarm Master Node
+  * t2.micro instance type
+  * 3 20GB storage drives
+* 3 Swarm Worker Nodes
+  * t2.micro instance types
+  * 3 20GB storage drives on each worker
+* Default cluster region: `us-west-2`
+
+
 ## Usage
 ### Set-Up
 [Download Terraform](https://www.terraform.io/downloads.html)
@@ -37,7 +49,6 @@ terraform apply
 Use the ssh key defined in `variables.tf` to access AWS instances.
 
 ### Maintenance
-
 Check current infrastructure state:
 ```
 terraform show terraform.tfstate
