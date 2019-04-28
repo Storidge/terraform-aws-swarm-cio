@@ -4,7 +4,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["cio-2751-u16"]
+    values = ["cio-2762-u16"]
   }
 
   filter {
