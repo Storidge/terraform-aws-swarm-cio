@@ -17,7 +17,7 @@ Default cluster configuration (can be altered in the `variables.tf` and `instanc
 
 ## Usage
 
-### Set-Up
+### Install Terraform and configure
 
 [Download Terraform](https://www.terraform.io/downloads.html)
 
@@ -30,19 +30,24 @@ Initialize Terraform for project directory:
 ```
 terraform init
 ```
-Add credentials file `terraform.tfvars`:
+
+**Add credentials**
+
+Add your AWS credentials (access id and secret key) to file `terraform.tfvars`:
 ```
 cd terraform-aws-swarm-cio
 cp terraform.tfvars.template terraform.tfvars
 ```
 Add your AWS access id and secret key to `terraform.tfvars`.
 
-Update `instances.tf` with desired AMI and instance arguments.
 
-Check `variables.tf` uses correct region and ssh key.
+**Configure instance**
+
+Check `variables.tf` uses desired region and AMI. 
 
 ### Start ssh-agent and add deployment key
 
+Terraform will use your local SSH key for the deployment. Start `ssh-agent` and add the deployment key: 
 ```
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/id_rsa
@@ -64,7 +69,24 @@ If there are no errors, run the following command to build infrastructure:
 terraform apply
 ```
 
-Login to cluster at the IP addresses listed. 
+Login to cluster at the IP addresses listed. For example below, `ssh 18.237.46.2`: 
+
+```
+null_resource.ansible_deploy (local-exec): PLAY RECAP *********************************************************************
+null_resource.ansible_deploy (local-exec): swarm-master-00            : ok=10   changed=8    unreachable=0    failed=0
+null_resource.ansible_deploy (local-exec): swarm-worker-00            : ok=6    changed=4    unreachable=0    failed=0
+null_resource.ansible_deploy (local-exec): swarm-worker-01            : ok=5    changed=4    unreachable=0    failed=0
+null_resource.ansible_deploy (local-exec): swarm-worker-02            : ok=5    changed=4    unreachable=0    failed=0
+
+null_resource.ansible_deploy: Creation complete after 2m41s (ID: 5166922584995052323)
+
+Apply complete! Resources: 41 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+swarm_master_address = 18.237.46.2
+swarm_worker_address = 54.70.9.178,35.167.209.220,34.219.180.109
+```
 
 ### Update state
 
@@ -83,5 +105,6 @@ terraform refresh
 To terminate the cluster run:
 ```
 terraform destroy
-```					
+```
+	
 
