@@ -7,16 +7,18 @@ The terraform code will look for an AWS image to launch the cloud instances. Thi
 Default cluster configuration (can be altered in the `variables.tf` and `instances.tf` files):
 
 * 1 Swarm Master Node
-  * t2.micro instance type
-  * 3 20GB storage drives
+  * t3.large instance type
+  * 3 100GB storage drives
 * 3 Swarm Worker Nodes
-  * t2.micro instance types
-  * 3 20GB storage drives on each worker
+  * t3.large instance types
+  * 3 100GB storage drives on each worker
 * Default cluster region: `us-west-2`
 
 
 ## Usage
+
 ### Set-Up
+
 [Download Terraform](https://www.terraform.io/downloads.html)
 
 Download template into desired project repository:
@@ -65,6 +67,7 @@ terraform apply
 Login to cluster at the IP addresses listed. 
 
 ### Update state
+
 Check current infrastructure state:
 ```
 terraform show terraform.tfstate
@@ -76,6 +79,7 @@ terraform refresh
 ```						
 
 ### Terminate cluster
+
 To terminate the cluster run:
 ```
 terraform destroy
