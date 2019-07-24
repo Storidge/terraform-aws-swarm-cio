@@ -38,12 +38,12 @@ Add your AWS credentials (access id and secret key) to file `terraform.tfvars`:
 cd terraform-aws-swarm-cio
 cp terraform.tfvars.template terraform.tfvars
 ```
-Add your AWS access id and secret key to `terraform.tfvars`.
-
 
 **Configure instance**
 
-Check `variables.tf` uses desired region and AMI. 
+Check `variables.tf` uses desired region.
+
+Check `instances.tf` uses desired instance type and AMI. 
 
 ### Start ssh-agent and add deployment key
 
@@ -69,7 +69,7 @@ If there are no errors, run the following command to build infrastructure:
 terraform apply
 ```
 
-Login to cluster at the IP addresses listed. For example below, `ssh 18.237.46.2`: 
+Login to cluster at the IP addresses listed. For example below, `ssh 18.237.46.2` to login master node: 
 
 ```
 null_resource.ansible_deploy (local-exec): PLAY RECAP *********************************************************************
