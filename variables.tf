@@ -13,7 +13,7 @@ variable "aws_vpc_subnet" {
 }
 
 variable "aws_ami" {
-  default = "ubuntu"
+  default = "cio-2887-u16"
 }
 
 # SSH Setup
@@ -28,7 +28,7 @@ variable "ssh_user" {
 ## Swarm setup
 
 variable "swarm_name" {
-  default = "testcluster"
+  default = "swarm"
 }
 
 variable "swarm_master_count" {
@@ -40,5 +40,5 @@ variable "swarm_worker_count" {
 }
 
 variable "swarm_worker_storage_size" {
-  default = "20"
+  default = "100"
 }

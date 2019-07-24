@@ -9,21 +9,21 @@
           docker info | egrep '^Swarm: ' | cut -d ' ' -f2
         register: swarm_status
 
-      - name: Set authorized key for deployment
+      - name: set authorized key for deployment
         authorized_key:
           user: root
           state: present
           key: "{{ deploy_pub_key }}"
 
-      - name: Swarm Init
+      - name: swarm init
         command: docker swarm init --advertise-addr {{ private_ip }}
         when: "'active' not in swarm_status.stdout_lines"
 
-      - name: Get Worker Token
+      - name: get worker token
         command: docker swarm join-token worker -q
         register: worker_token
 
-      - name: Get Master Token
+      - name: get master token
         command: docker swarm join-token manager -q
         register: master_token
 
@@ -40,24 +40,24 @@
           docker info | egrep '^Swarm: ' | cut -d ' ' -f2
         register: swarm_status
 
-      - name: Join Swarm Cluster as a Worker
+      - name: join swarm cluster as a worker
         command: docker swarm join --token {{ token }} {{ master }}:2377
         register: worker
         when: "'active' not in swarm_status.stdout_lines"
 
-  - name: Init Storidge Master
+  - name: Create Storidge Cluster
     hosts: masters
     become: true
     gather_facts: False
     tasks:
-      - name: try to get join token from active cluster
+      - name: get join token from active cluster
         shell: >
           cioctl join-token | awk '/cioctl join/ {print $5}'
         register: jointoken
 
-      - name: create a new cluster
+      - name: create cluster
         shell: >
-          cioctl create --ip {{ private_ip }} | awk '/cioctl join/ {print $5}'
+          cioctl create --ip {{ private_ip }} | awk '/cioctl join/ {print $4}'
         register: clustertoken
         when: "jointoken.stdout == ''"
 
@@ -72,20 +72,26 @@
     tasks:
       - name: check if already a cluster member
         stat:
-          path: /etc/convergeio/nodeid
+          path: /etc/storidge/nodeid
         register: nodeid
 
-      - name: cioctl join on nodes
-        command: "cioctl join {{ master }} root {{ clustertoken.stdout|default(jointoken.stdout) }} --ip {{ private_ip }}"
-        when: "nodeid.stat.exists == False"
+      - pause: seconds=10
 
-  - name: Add Nodes To Master
+      - name: join nodes to cio cluster
+        command: "cioctl join {{ master }} {{ clustertoken.stdout|default(jointoken.stdout) }} --ip {{ private_ip }}"
+
+      - name: join nodes to cio cluster
+        command: "cioctl join {{ master }} {{ clustertoken.stdout|default(jointoken.stdout) }} --ip {{ private_ip }}"
+
+  - name: Initialize Storidge Cluster
     hosts: masters
     become: true
     gather_facts: False
+    vars:
+      clustertoken: "{{ hostvars[groups['masters'][0]]['clustertoken'] }}"
     tasks:
       - name: cioctl init
-        command: "cioctl init {{ clustertoken.stdout }}"
+        command: "cioctl init {{ clustertoken.stdout.split('-')[1] }}"
         register: clusterinit
         when: "clustertoken is not skipped"
 

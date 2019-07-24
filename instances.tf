@@ -4,7 +4,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["cio-2773-u16"]
+    values = ["cio-2887-u16"]
   }
 
   filter {
@@ -18,7 +18,7 @@ data "aws_ami" "ubuntu" {
 ### Setup Swarm master
 resource "aws_instance" "docker_swarm_master" {
   count         = "${var.swarm_master_count}"
-  instance_type = "t2.micro"
+  instance_type = "t3.large"
   ami           = "${data.aws_ami.ubuntu.id}"
   key_name      = "${aws_key_pair.auth.id}"
   subnet_id     = "${aws_subnet.storidge.id}"
@@ -61,7 +61,7 @@ resource "aws_volume_attachment" "docker_swarm_master_attachment03" {
 ### Setup Swarm worker
 resource "aws_instance" "docker_swarm_worker" {
   count         = "${var.swarm_worker_count}"
-  instance_type = "t2.micro"
+  instance_type = "t3.large"
   ami           = "${data.aws_ami.ubuntu.id}"
   key_name      = "${aws_key_pair.auth.id}"
   subnet_id     = "${aws_subnet.storidge.id}"
