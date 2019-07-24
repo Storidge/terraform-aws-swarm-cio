@@ -24,7 +24,7 @@ Download template into desired project repository:
 git clone https://github.com/Storidge/terraform-aws-swarm-cio.git
 ```
 
-Initiate terraform:
+Initialize Terraform for project directory:
 ```
 terraform init
 ```
@@ -35,11 +35,22 @@ cp terraform.tfvars.template terraform.tfvars
 ```
 Add your AWS access id and secret key to `terraform.tfvars`.
 
-Update `instances.tf` with correct AMI and instance arguments.
+Update `instances.tf` with desired AMI and instance arguments.
 
 Check `variables.tf` uses correct region and ssh key.
 
-To verify your configuration will work run:
+### Start ssh-agent and add deployment key
+
+```
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+echo $SSH_AGENT_SOCK
+ssh-add -l
+```
+
+### Verify build 
+
+Before deploying, check what Terraform will build:
 
 ```
 terraform plan
@@ -50,7 +61,8 @@ If there are no errors, run the following command to build infrastructure:
 ```
 terraform apply
 ```
-Use the ssh key defined in `variables.tf` to access AWS instances.
+
+Login to cluster at the IP addresses listed. 
 
 ### Update state
 Check current infrastructure state:
