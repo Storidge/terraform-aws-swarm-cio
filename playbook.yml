@@ -75,13 +75,12 @@
           path: /etc/storidge/nodeid
         register: nodeid
 
-      - pause: seconds=10
-
       - name: join nodes to cio cluster
         command: "cioctl join {{ master }} {{ clustertoken.stdout|default(jointoken.stdout) }} --ip {{ private_ip }}"
-
-      - name: join nodes to cio cluster
-        command: "cioctl join {{ master }} {{ clustertoken.stdout|default(jointoken.stdout) }} --ip {{ private_ip }}"
+        register: result
+        until: result.stdout.find("Adding this node") != -1
+        retries: 5
+        delay: 1
 
   - name: Initialize Storidge Cluster
     hosts: masters
