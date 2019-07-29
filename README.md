@@ -4,7 +4,7 @@ This repo contains a [Terraform](https://www.terraform.io/) template for generat
 The terraform code will look for an AWS image to launch the cloud instances. This image can be easily created by following the steps in the [packer-cio](https://github.com/Storidge/packer-cio) repo.
 
 ## Configuration
-Default cluster configuration (can be altered in the `variables.tf` and `instances.tf` files):
+Default node deployment:
 
 * 1 Swarm Master Node
   * t3.large instance type
@@ -14,6 +14,7 @@ Default cluster configuration (can be altered in the `variables.tf` and `instanc
   * 3 100GB storage drives on each worker
 * Default cluster region: `us-west-2`
 
+During cluster initialization, Storidge will reconfigured the Swarm cluster to have 3 manager nodes for redundancy. 
 
 ## Usage
 
@@ -106,5 +107,4 @@ To terminate the cluster run:
 ```
 terraform destroy
 ```
-	
 
