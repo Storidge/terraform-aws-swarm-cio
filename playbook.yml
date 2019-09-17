@@ -6,7 +6,7 @@
     tasks:
       - name: get join token from active cluster
         shell: >
-          cioctl join-token | awk '/cioctl join/ {print $5}'
+          cioctl join-token | awk '/cioctl node add/ {print $5}'
         register: jointoken
 
       - name: create cluster
