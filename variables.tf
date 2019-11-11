@@ -13,7 +13,7 @@ variable "aws_vpc_subnet" {
 }
 
 variable "aws_ami" {
-  default = "cio-3046-u16"
+  default = "cio-3047-u16"
 }
 
 # SSH Setup
