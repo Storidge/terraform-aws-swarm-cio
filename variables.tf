@@ -1,8 +1,24 @@
 # Amazon Web Services Setup
 
-variable "aws_access_key" {}
+variable "aws_access_key" {
+  default= "AWS_ACCESS_KEY"
+}
 
-variable "aws_secret_key" {}
+variable "aws_secret_key" {
+  default="AWS_SECRET_KEY"
+}
+
+variable "ssh_fingerprint" {
+  default="SSH_MD5_FINGERPRINT"
+}
+
+variable "pub_key" {
+  default="PATH_TO_PUB_KEY"
+}
+
+variable "pvt_key" {
+  default="PATH_TO_PVT_KEY"
+}
 
 variable "aws_region" {
   default = "us-west-2"
@@ -18,7 +34,7 @@ variable "aws_ami" {
 
 # SSH Setup
 variable "ssh_key_public" {
-  default = "~/.ssh/id_rsa.pub"
+  default = "PATH_TO_PUB_KEY"
 }
 
 variable "ssh_user" {

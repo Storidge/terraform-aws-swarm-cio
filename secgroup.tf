@@ -1,7 +1,7 @@
 resource "aws_security_group" "storidge" {
-  name        = "${var.swarm_name}-storidge-cluster"
+  name        = "var.swarm_name-storidge-cluster"
   description = "Storidge Cluster Communication"
-  vpc_id      = "${aws_vpc.storidge.id}"
+  vpc_id      = aws_vpc.storidge.id
 
   # SSH access from anywhere
   ingress {
@@ -16,7 +16,7 @@ resource "aws_security_group" "storidge" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${var.aws_vpc_subnet}"]
+    cidr_blocks = [var.aws_vpc_subnet]
   }
 
   # outbound internet access

@@ -52,4 +52,4 @@
         debug: var=clusterinit.stdout
 
       - name: show cluster init error
-        debug: var=clusterinit.stderr
+        debug: var=clusterinit.stderr #can put copies of this debug under blocks like "tasks" to debug things
